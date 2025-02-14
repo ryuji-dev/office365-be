@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import User from '../modles/User';
+
+dotenv.config();
 
 const JWT = process.env.JWT_SECRET;
 
@@ -92,4 +95,20 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const errorMessage = (error as Error).message;
     res.status(500).send(`로그인 중 오류가 발생했습니다: ${errorMessage}`);
   }
+};
+
+// 로그아웃
+export const logout = (req: Request, res: Response): void => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    res.status(401).json({
+      error: 'Unauthorized',
+      message: '사용자가 로그인하지 않았습니다.',
+    });
+    return;
+  }
+
+  res.clearCookie('token');
+  res.status(200).json({ message: '로그아웃 되었습니다.' });
 };
