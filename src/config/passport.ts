@@ -8,34 +8,46 @@ dotenv.config();
 const handleUser = async (
   profile: any,
   registerType: string,
-  done: (err: any, user: any) => void
+  done: (err: any, user?: any) => void
 ) => {
   try {
     const existingUser = await User.findOne({
       where: { socialId: profile.id, registerType },
     });
-
     if (existingUser) {
       done(null, existingUser);
     } else {
-      const email = profile?.emails[0]?.value;
+      const email = profile?.emails
+        ? profile.emails[0].value
+        : registerType === 'kakao'
+        ? profile?._json?.kakao_account?.email
+        : registerType === 'naver'
+        ? profile.email
+        : null;
+
+      const profileImg = profile.photos
+        ? profile.photos[0].value
+        : registerType === 'kakao'
+        ? profile?._json?.properties?.thumbnail_image
+        : registerType === 'naver'
+        ? profile.profile_image
+        : null;
 
       if (!email) {
-        return done(new Error('이메일이 존재하지 않습니다.'), null);
+        return done(new Error('Email not found'), null);
       }
 
       const newUser = await User.create({
         email,
         socialId: profile.id,
         registerType,
-        profileImage: profile.photos[0].value,
+        profileImage: profileImg,
       });
-
       done(null, newUser);
     }
-  } catch (error) {
-    console.error(error);
-    done(error, null);
+  } catch (err) {
+    console.error(err);
+    done(err);
   }
 };
 
@@ -45,7 +57,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      callbackURL: 'http://localhost:3000/api/v1/google/callback',
+      callbackURL: process.env.GOOGLE_CALLBACK_URL!,
     },
     (
       accessToken: string,
