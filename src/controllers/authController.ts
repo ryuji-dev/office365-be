@@ -187,3 +187,25 @@ export const googleLogout = (req: Request, res: Response): void => {
   res.clearCookie('token');
   res.status(200).json({ message: '구글 로그아웃 되었습니다.' });
 };
+
+// 네이버 로그인 요청 처리
+export const naverLogin = passport.authenticate('naver', {
+  authType: 'reprompt',
+});
+
+// 네이버 로그인 콜백 처리
+export const naverCallback = async (req: Request, res: Response) => {
+  passport.authenticate('naver', { failureRedirect: '/' })(
+    req,
+    res,
+    async () => {
+      await handleSocialLogin(req, res, 'naver');
+    }
+  );
+};
+
+// 네이버 로그아웃
+export const naverLogout = (req: Request, res: Response): void => {
+  res.clearCookie('token');
+  res.status(200).json({ message: '네이버 로그아웃 되었습니다.' });
+};

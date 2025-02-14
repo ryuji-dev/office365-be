@@ -1,6 +1,7 @@
 import passport from 'passport';
 import dotenv from 'dotenv';
 import { Strategy as GoogleStrategy, Profile } from 'passport-google-oauth20';
+import { Strategy as NaverStrategy } from 'passport-naver-v2';
 import User from '../models/User';
 
 dotenv.config();
@@ -65,6 +66,23 @@ passport.use(
       profile: Profile,
       done: (error: any, user: any) => void
     ) => handleUser(profile, 'google', done)
+  )
+);
+
+// Naver Strategy
+passport.use(
+  new NaverStrategy(
+    {
+      clientID: process.env.NAVER_CLIENT_ID!,
+      clientSecret: process.env.NAVER_CLIENT_SECRET!,
+      callbackURL: process.env.NAVER_CALLBACK_URL!,
+    },
+    (
+      accessToken: string,
+      refreshToken: string,
+      profile: any,
+      done: (error: any, user: any) => void
+    ) => handleUser(profile, 'naver', done)
   )
 );
 
