@@ -2,6 +2,7 @@ import passport from 'passport';
 import dotenv from 'dotenv';
 import { Strategy as GoogleStrategy, Profile } from 'passport-google-oauth20';
 import { Strategy as NaverStrategy } from 'passport-naver-v2';
+import { Strategy as KakaoStrategy } from 'passport-kakao';
 import User from '../models/User';
 
 dotenv.config();
@@ -83,6 +84,22 @@ passport.use(
       profile: any,
       done: (error: any, user: any) => void
     ) => handleUser(profile, 'naver', done)
+  )
+);
+
+// Kakao Strategy
+passport.use(
+  new KakaoStrategy(
+    {
+      clientID: process.env.KAKAO_CLIENT_ID!,
+      callbackURL: process.env.KAKAO_CALLBACK_URL!,
+    },
+    (
+      accessToken: string,
+      refreshToken: string,
+      profile: any,
+      done: (error: any, user: any) => void
+    ) => handleUser(profile, 'kakao', done)
   )
 );
 

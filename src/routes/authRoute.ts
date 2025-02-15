@@ -9,6 +9,9 @@ import {
   naverLogin,
   naverCallback,
   naverLogout,
+  kakaoLogin,
+  kakaoCallback,
+  kakaoLogout,
 } from '../controllers/authController';
 
 const router = express.Router();
@@ -22,5 +25,8 @@ router.post('/google/logout', googleLogout);
 router.get('/naver', naverLogin);
 router.get('/naver/callback', naverCallback);
 router.post('/naver/logout', naverLogout);
+router.get('/kakao', kakaoLogin);
+router.get('/kakao/callback', kakaoCallback);
+router.post('/kakao/logout', kakaoLogout);
 
 export default router;

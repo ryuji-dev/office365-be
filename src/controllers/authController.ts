@@ -209,3 +209,23 @@ export const naverLogout = (req: Request, res: Response): void => {
   res.clearCookie('token');
   res.status(200).json({ message: '네이버 로그아웃 되었습니다.' });
 };
+
+// 카카오 로그인 요청 처리
+export const kakaoLogin = passport.authenticate('kakao');
+
+// 카카오 로그인 콜백 처리
+export const kakaoCallback = async (req: Request, res: Response) => {
+  passport.authenticate('kakao', { failureRedirect: '/' })(
+    req,
+    res,
+    async () => {
+      await handleSocialLogin(req, res, 'kakao');
+    }
+  );
+};
+
+// 카카오 로그아웃
+export const kakaoLogout = (req: Request, res: Response): void => {
+  res.clearCookie('token');
+  res.status(200).json({ message: '카카오 로그아웃 되었습니다.' });
+};
