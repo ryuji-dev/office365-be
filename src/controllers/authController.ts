@@ -125,7 +125,10 @@ const handleSocialLogin = async (
   if (req.user) {
     const user = req.user as IUser;
 
-    let existingUser = await User.findById(user._id);
+    let existingUser = await User.findOne({
+      socialId: user.socialId,
+      registerType: provider,
+    });
 
     if (!existingUser) {
       existingUser = await User.create({

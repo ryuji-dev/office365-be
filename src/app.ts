@@ -4,9 +4,10 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
 import dotenv from 'dotenv';
-import authRoute from './routes/authRoute';
 import './config/passport';
 import './middlewares/passport';
+import authRoute from './routes/authRoute';
+import mypageRoute from './routes/mypageRoute';
 
 dotenv.config();
 
@@ -32,5 +33,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/v1', authRoute);
+app.use('/api/v1/mypage', mypageRoute);
 
 export default app;
