@@ -14,8 +14,10 @@ const handleUser = async (
 ) => {
   try {
     const existingUser = await User.findOne({
-      where: { socialId: profile.id, registerType },
+      socialId: profile.id,
+      registerType,
     });
+
     if (existingUser) {
       done(null, existingUser);
     } else {
@@ -37,6 +39,11 @@ const handleUser = async (
 
       if (!email) {
         return done(new Error('Email not found'), null);
+      }
+
+      const userByEmail = await User.findOne({ email });
+      if (userByEmail) {
+        return done(null, userByEmail);
       }
 
       const newUser = await User.create({
