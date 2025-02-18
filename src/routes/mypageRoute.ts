@@ -4,6 +4,7 @@ import {
   getProfile,
   changeAvatar,
   uploadMulter,
+  changePassword,
 } from '../controllers/mypageController';
 
 const router = express.Router();
@@ -19,6 +20,12 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   uploadMulter.single('avatar'),
   changeAvatar
+);
+
+router.post(
+  '/change-password',
+  passport.authenticate('jwt', { session: false }),
+  changePassword
 );
 
 export default router;

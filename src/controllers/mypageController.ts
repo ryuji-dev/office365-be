@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import path from 'path';
 import multer from 'multer';
+import bcrypt from 'bcrypt';
 import User, { IUser } from '../models/User';
 
 // 프로필 조회
@@ -94,6 +95,45 @@ export const changeAvatar = async (
   } catch (error) {
     res.status(500).json({
       message: '프로필 아바타 변경 중 오류가 발생했습니다.',
+      error,
+    });
+  }
+};
+
+// 비밀번호 변경
+export const changePassword = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { currentPassword, newPassword, passwordConfirm } = req.body;
+  const userId = (req.user as IUser)?._id;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(404).json({ message: '사용자를 찾을 수 없습니다.' });
+      return;
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      res.status(401).json({ message: '현재 비밀번호가 일치하지 않습니다.' });
+      return;
+    }
+
+    if (newPassword !== passwordConfirm) {
+      res.status(400).json({ message: '비밀번호가 일치하지 않습니다.' });
+      return;
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+    res.status(200).json({
+      message: '비밀번호가 변경되었습니다.',
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: '비밀번호 변경 중 오류가 발생했습니다.',
       error,
     });
   }
