@@ -39,7 +39,7 @@ export const getProfile = async (
 // 디스크 저장소 설정
 const storage = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb: Function) => {
-    cb(null, path.resolve(__dirname, '../../src/assets/uploads/'));
+    cb(null, 'uploads');
   },
   filename: (req: Request, file: Express.Multer.File, cb: Function) => {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -48,7 +48,7 @@ const storage = multer.diskStorage({
 
 // 파일 형식 제한
 const fileFilter = (req: Request, file: Express.Multer.File, cb: Function) => {
-  const filetypes = /jpeg|jpg|png|webp/;
+  const filetypes = /jpeg|jpg|png|webp|svg/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
 

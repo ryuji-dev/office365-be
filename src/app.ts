@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
 import dotenv from 'dotenv';
+import path from 'path';
 import './config/passport';
 import './middlewares/passport';
 import authRoute from './routes/authRoute';
@@ -31,6 +32,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api/v1', authRoute);
 app.use('/api/v1/mypage', mypageRoute);
