@@ -5,6 +5,7 @@ import {
   changeAvatar,
   uploadMulter,
   changePassword,
+  deleteUser,
 } from '../controllers/mypageController';
 
 const router = express.Router();
@@ -26,6 +27,12 @@ router.post(
   '/change-password',
   passport.authenticate('jwt', { session: false }),
   changePassword
+);
+
+router.delete(
+  '/delete-user',
+  passport.authenticate('jwt', { session: false }),
+  deleteUser
 );
 
 export default router;
