@@ -9,6 +9,7 @@ export interface IVisitor {
   visitDate?: Date;
   visitTarget?: string;
   visitPurpose?: string;
+  status?: '접수중' | '접수' | '처리완료';
 }
 
 const VisitorSchema = new Schema({
@@ -19,6 +20,11 @@ const VisitorSchema = new Schema({
   visitDate: { type: Date },
   visitTarget: { type: String },
   visitPurpose: { type: String },
+  status: {
+    type: String,
+    enum: ['접수중', '접수', '처리완료'],
+    default: '접수중',
+  },
 });
 
 export default mongoose.model<IVisitor>('Visitor', VisitorSchema);

@@ -1,20 +1,8 @@
 import express from 'express';
 import passport from 'passport';
-import {
-  selectDepartment,
-  registration,
-  getVisitor,
-} from '../controllers/visitorController';
+import { registration, getVisitors } from '../controllers/visitorController';
 
 const router = express.Router();
-
-router.post(
-  '/select-department',
-  passport.authenticate('jwt', { session: false }),
-  (req, res) => {
-    selectDepartment(req, res);
-  }
-);
 
 router.post(
   '/registration',
@@ -28,7 +16,7 @@ router.get(
   '/visitors',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    getVisitor(req, res);
+    getVisitors(req, res);
   }
 );
 
