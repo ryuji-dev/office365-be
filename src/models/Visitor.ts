@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 export interface IVisitor {
   _id: string;
-  department: string;
+  department?: string;
   name?: string;
   email?: string;
   phone?: string;
@@ -12,7 +12,7 @@ export interface IVisitor {
 }
 
 const VisitorSchema = new Schema({
-  department: { type: String, required: true },
+  department: { type: String },
   name: { type: String },
   email: { type: String },
   phone: { type: String },
