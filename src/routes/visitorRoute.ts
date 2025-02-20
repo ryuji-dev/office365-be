@@ -1,6 +1,9 @@
 import express from 'express';
 import passport from 'passport';
-import { selectDepartment } from '../controllers/visitorController';
+import {
+  selectDepartment,
+  registration,
+} from '../controllers/visitorController';
 
 const router = express.Router();
 
@@ -9,6 +12,14 @@ router.post(
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     selectDepartment(req, res);
+  }
+);
+
+router.post(
+  '/registration',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    registration(req, res);
   }
 );
 
