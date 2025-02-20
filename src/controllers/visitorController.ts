@@ -4,11 +4,12 @@ import Visitor from '../models/Visitor';
 export const selectDepartment = async (req: Request, res: Response) => {
   console.log(req.body);
   try {
-    const { department } = req.body;
+    const { department, email } = req.body;
+
     const newVisitor = new Visitor({
       department,
       name: '',
-      email: '',
+      email,
       phone: '',
       visitDate: new Date(),
       visitTarget: '',

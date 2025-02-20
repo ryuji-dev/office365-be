@@ -7,7 +7,9 @@ const router = express.Router();
 router.post(
   '/select-department',
   passport.authenticate('jwt', { session: false }),
-  selectDepartment
+  (req, res) => {
+    selectDepartment(req, res);
+  }
 );
 
 export default router;
