@@ -9,6 +9,7 @@ import './config/passport';
 import './middlewares/passport';
 import authRoute from './routes/authRoute';
 import mypageRoute from './routes/mypageRoute';
+import visitorRoute from './routes/visitorRoute';
 
 dotenv.config();
 
@@ -36,5 +37,6 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api/v1', authRoute);
 app.use('/api/v1/mypage', mypageRoute);
+app.use('/api/v1/visitor', visitorRoute);
 
 export default app;
