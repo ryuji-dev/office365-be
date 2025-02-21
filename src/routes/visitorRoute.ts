@@ -4,6 +4,7 @@ import {
   registration,
   getVisitors,
   getVisitorById,
+  updateVisitor,
 } from '../controllers/visitorController';
 
 const router = express.Router();
@@ -29,6 +30,14 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     getVisitorById(req, res);
+  }
+);
+
+router.put(
+  '/visitors/:visitorId',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    updateVisitor(req, res);
   }
 );
 
