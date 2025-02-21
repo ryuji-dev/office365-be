@@ -1,6 +1,10 @@
 import express from 'express';
 import passport from 'passport';
-import { registration, getVisitors } from '../controllers/visitorController';
+import {
+  registration,
+  getVisitors,
+  getVisitorById,
+} from '../controllers/visitorController';
 
 const router = express.Router();
 
@@ -17,6 +21,14 @@ router.get(
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     getVisitors(req, res);
+  }
+);
+
+router.get(
+  '/visitors/:visitorId',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    getVisitorById(req, res);
   }
 );
 
