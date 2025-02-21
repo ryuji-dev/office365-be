@@ -10,7 +10,8 @@ export const registration = async (req: Request, res: Response) => {
       name,
       email,
       phone,
-      visitDate,
+      visitStartDate,
+      visitEndDate,
       visitTarget,
       visitPurpose,
     } = req.body;
@@ -20,7 +21,8 @@ export const registration = async (req: Request, res: Response) => {
       name,
       email,
       phone,
-      visitDate,
+      visitStartDate,
+      visitEndDate,
       visitTarget,
       visitPurpose,
     });
