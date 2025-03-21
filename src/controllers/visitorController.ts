@@ -104,26 +104,29 @@ export const updateVisitor = async (req: Request, res: Response) => {
       });
     }
 
-    const updatedVisitor = await Visitor.findByIdAndUpdate(
-      visitorId,
-      {
-        department,
-        name,
-        email,
-        phone,
-        visitStartDate,
-        visitEndDate,
-        visitTarget,
-        visitPurpose,
-      },
-      { new: true }
-    );
-
-    if (!updatedVisitor) {
+    const existingVisitor = await Visitor.findById(visitorId);
+    if (!existingVisitor) {
       return res.status(404).json({
         message: '방문자를 찾을 수 없습니다.',
       });
     }
+
+    const updatedVisitor = await Visitor.findByIdAndUpdate(
+      visitorId,
+      {
+        $set: {
+          department,
+          name,
+          email,
+          phone,
+          visitStartDate,
+          visitEndDate,
+          visitTarget,
+          visitPurpose,
+        },
+      },
+      { new: true }
+    );
 
     res.status(200).json({
       message: '방문자 정보가 성공적으로 수정되었습니다.',
@@ -132,6 +135,29 @@ export const updateVisitor = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       message: '방문자 정보를 수정하는 중 오류가 발생했습니다.',
+      error,
+    });
+  }
+};
+
+// 방문자 정보 삭제
+export const deleteVisitor = async (req: Request, res: Response) => {
+  try {
+    const { visitorId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(visitorId)) {
+      return res.status(400).json({
+        message: '유효하지 않은 방문자 ID입니다.',
+      });
+    }
+
+    await Visitor.findByIdAndDelete(visitorId);
+    res.status(200).json({
+      message: '방문자 정보가 성공적으로 삭제되었습니다.',
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: '방문자 정보를 삭제하는 중 오류가 발생했습니다.',
       error,
     });
   }
